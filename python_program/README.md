@@ -1,0 +1,1 @@
+Django file sits here in this folder
