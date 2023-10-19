@@ -1,0 +1,102 @@
+{
+  "Location 1": {
+    "Type of Visitors": "Family",
+    "Type of Attraction": "Historical Sites",
+    "Attractions and Facilities": 4,
+    "Visitor Services": 4,
+    "Felt Safe & Secure": "Yes",
+    "Value for Money": 4,
+    "Would Visit Again": "Yes",
+    "Overall Experience": 4
+  },
+  "Location 2": {
+    "Type of Visitors": "Adventure Seeker",
+    "Type of Attraction": "Natural Wonders",
+    "Attractions and Facilities": 5,
+    "Visitor Services": 4,
+    "Felt Safe & Secure": "Yes",
+    "Value for Money": 5,
+    "Would Visit Again": "Yes",
+    "Overall Experience": 5
+  },
+  "Location 3": {
+    "Type of Visitors": "History Enthusiasts",
+    "Type of Attraction": "Cultural Landmarks",
+    "Attractions and Facilities": 3,
+    "Visitor Services": 3,
+    "Felt Safe & Secure": "Yes",
+    "Value for Money": 3,
+    "Would Visit Again": "No",
+    "Overall Experience": 3
+  },
+   "Location 4": {
+    "Type of Visitors": "Family",
+    "Type of Attraction": "Natural Wonders",
+    "Attractions and Facilities": 5,
+    "Visitor Services": 4,
+    "Felt Safe & Secure": "Yes",
+    "Value for Money": 5,
+    "Would Visit Again": "Yes",
+    "Overall Experience": 5
+  },
+  "Location 5": {
+    "Type of Visitors": "Adventure Seeker",
+    "Type of Attraction": "Historical Sites",
+    "Attractions and Facilities": 4,
+    "Visitor Services": 3,
+    "Felt Safe & Secure": "Yes",
+    "Value for Money": 4,
+    "Would Visit Again": "Yes",
+    "Overall Experience": 4
+  },
+  "Location 6": {
+    "Type of Visitors": "Family",
+    "Type of Attraction": "Natural Wonders",
+    "Attractions and Facilities": 3,
+    "Visitor Services": 4,
+    "Felt Safe & Secure": "Yes",
+    "Value for Money": 3,
+    "Would Visit Again": "No",
+    "Overall Experience": 3
+  },
+  "Location 7": {
+    "Type of Visitors": "Adventure Seeker",
+    "Type of Attraction": "Cultural Landmarks",
+    "Attractions and Facilities": 4,
+    "Visitor Services": 4,
+    "Felt Safe & Secure": "Yes",
+    "Value for Money": 4,
+    "Would Visit Again": "Yes",
+    "Overall Experience": 4
+  },
+  "Location 8": {
+    "Type of Visitors": "History Enthusiasts",
+    "Type of Attraction": "Historical Sites",
+    "Attractions and Facilities": 5,
+    "Visitor Services": 5,
+    "Felt Safe & Secure": "Yes",
+    "Value for Money": 5,
+    "Would Visit Again": "Yes",
+    "Overall Experience": 5
+  },
+  "Location 9": {
+    "Type of Visitors": "Family",
+    "Type of Attraction": "Natural Wonders",
+    "Attractions and Facilities": 4,
+    "Visitor Services": 4,
+    "Felt Safe & Secure": "Yes",
+    "Value for Money": 4,
+    "Would Visit Again": "Yes",
+    "Overall Experience": 4
+  },
+  "Location 10": {
+    "Type of Visitors": "Adventure Seeker",
+    "Type of Attraction": "Cultural Landmarks",
+    "Attractions and Facilities": 3,
+    "Visitor Services": 3,
+    "Felt Safe & Secure": "Yes",
+    "Value for Money": 3,
+    "Would Visit Again": "No",
+    "Overall Experience": 3
+  }
+}
