@@ -1,0 +1,1 @@
+web gunicorn touristproject.wsgi:application --log-file -
