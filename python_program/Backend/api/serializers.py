@@ -1,23 +1,15 @@
 from rest_framework import serializers
 
-from .models import Category, Place, Review
+from .models import User
 
 
-class CategorySerializer(serializers.ModelSerializer):
+
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Category
-        fields = '__all__'
+        model = User
+        fields = ['username', 'email', 'password']
+        extra_kwargs = {'password': {'write_only': True}}
 
-
-class placeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Place
-        fields = '__all__'
-
-
-
-
-class ReviewSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Review
-        fields = '__all__'
+class UserLoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField(write_only=True)
