@@ -1,28 +1,50 @@
 'use client'
+import Image from 'next/image';
 import { useState, type FC, useEffect } from 'react';
 // import { useRouter } from 'next/router';
 
 interface chatProps { }
+interface LocationData {
+    name: string,
+    cityState: string,
+    imageUrl: string,
+    ranking: string,
+    webUrl: string
+}
+const dummy: LocationData = {
+    name: "",
+    cityState: "",
+    imageUrl: "",
+    ranking: "",
+    webUrl: ""
+
+}
 const Chat: FC<chatProps> = ({ }) => {
-    // const router = useRouter();
-    // const { data } = router.query;
-    // const parsedData = JSON.parse(data || {});
 
-
+    const [placeData, setPlaceData] = useState<LocationData>(dummy)
     const [inputText, setInputText] = useState("")
+    const [isPlaceLoaded, setPlaceLoaded] = useState(false)
     const [userMsg, setUserMsg] = useState("")
     const [messages, setMessages] = useState([
 
-        {
-            sender: "ai",
-            message: "Hello, you are currently here "
-        },
+
         {
             sender: "user",
             message: "Tell me the history of this place"
         },
     ]);
 
+    useEffect(() => {
+        const dataString = localStorage.getItem('placeData')
+
+        if (dataString) {
+            const data: LocationData = JSON.parse(dataString)
+
+            setPlaceData(data)
+
+        }
+        setPlaceLoaded(true)
+    }, [])
 
     useEffect(() => {
         const storedMessage = localStorage.getItem('message');
@@ -30,10 +52,23 @@ const Chat: FC<chatProps> = ({ }) => {
             const retrievedMessage = JSON.parse(storedMessage)
             setMessages(retrievedMessage);
         }
-        
+
     }, [])
 
+    const AI_init = <div className="flex items-center">
+        <span className='mr-1  px-2 py-1 rounded-full'>AI:</span>
+        <div className="flex flex-col w-full py-4 px-4 bg-slate-800 rounded-md space-y-2">
+            <h3 className='text-xl font-bold'>Your chosen place of visit is: </h3>
+            <p>{placeData.name + ", " + placeData.cityState + "."}</p>
 
+            {placeData.imageUrl && <div className="mx-auto">
+                <img src={placeData.imageUrl} width={250} height={250} alt={placeData.name} />
+            </div>}
+            <p>This place is ranked {placeData.ranking} </p>
+        </div>
+
+
+    </div>
     let chatAIMsg = ""
     let getInput = (e: any) => {
         const { value } = e.target
@@ -76,6 +111,22 @@ const Chat: FC<chatProps> = ({ }) => {
             )
         }
     })
+    // The flash screen before the fetch result appears
+    const LoadingChatView = () => {
+        return (
+            <div className="flex justify-center items-center">
+                Loading chat...
+            </div>
+        )
+    }
+    const LoadedChatView = () => {
+        return (
+            <div>
+                {AI_init}
+                {display}
+            </div>
+        )
+    }
     return (
         <div>
             <div className="bg-gray-700 p-4">
@@ -83,8 +134,7 @@ const Chat: FC<chatProps> = ({ }) => {
             </div>
 
             <div className="chat p-2">
-
-                {display}
+                {!isPlaceLoaded ? LoadingChatView() : LoadedChatView()}
             </div>
 
 

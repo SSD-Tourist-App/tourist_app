@@ -1,19 +1,20 @@
 'use client'
-import Image from 'next/image'
-import Link from 'next/link';
 import { useState, useEffect } from 'react';
-
+import { useRouter } from 'next/navigation';
 export default function Home() {
+ 
+
   interface LocationData {
     name: string;
     location_string: string;
     photo: any;
+    web_url: string;
+    ranking_subcategory: string;
   }
 
 
   const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
-  // const []
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [mainData, setMainData] = useState<LocationData[]>([]);
 
   const [bl_lat, setBl_lat] = useState("");
@@ -21,7 +22,7 @@ export default function Home() {
   const [tr_lat, setTr_lat] = useState("");
   const [tr_lng, setTr_lng] = useState("");
 
-
+  // This function getLocationData uses the Long Lat details from the getLocationCords function to query the API
   let getLocationData = async (bl_lat: string, bl_lng: string, tr_lat: string, tr_lng: string, type: string) => {
     const options = {
       method: "GET",
@@ -43,18 +44,14 @@ export default function Home() {
         setTimeout(() => {
           setIsLoading(false);
 
-        }, 1000);
+        }, 2000);
         // console.log(data[0].photo.images.thumbnail);
       })
       .catch((err) => console.error(err));
-
-    // const first = mainData[0]
-    console.log("first");
   };
 
 
-  const getLocation = (e: any) => {
-    e.preventDefault();
+  const getLocationCords = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -73,7 +70,6 @@ export default function Home() {
           setTr_lat(tr_latitude.toString())
           setTr_lng(tr_longitude.toString())
 
-          // getLocationData(bl_lat, bl_lng, tr_lat, tr_lng, "attractions")
           getLocationData(bl_latitude.toString(), bl_longitude.toString(), tr_latitude.toString(), tr_longitude.toString(), "attractions")
           // console.log(bl_latitude.toString(), bl_longitude.toString(), tr_latitude.toString(), tr_longitude.toString(), "attractions")
         },
@@ -86,26 +82,51 @@ export default function Home() {
       console.error('Getting location is not supported on your browser');
     }
   }
+
   useEffect(() => {
-    getLocation(event)
+    getLocationCords()
   }, [])
 
+  // The flash screen before the fetch result appears
+  const LoadingView = () => {
+    return (
+      <div className="flex justify-center items-center">
+        Loading places nearby...
+      </div>
+    )
+  }
+  const router = useRouter()
+  const loadChat = (location_data: LocationData) => {
+   
+    const data = location_data;
+    try {
+      const { location_string, web_url, name, photo, ranking_subcategory } = data
+      const place_data = {
+        name: name,
+        cityState: location_string,
+        imageUrl: photo?.images?.original?.url,
+        ranking: ranking_subcategory,
+        webUrl: web_url
+      }
+      localStorage.setItem('placeData', JSON.stringify(place_data))
+      // window.location.href = "/chat"
+      router.push("/chat");
+    } catch (error) {
+      console.error(error)
+    }
 
-  return (
-    <div className='p-6'>
-      {location && (
-        <div className='flex space-x-4 justify-center'>
-          <p>Lat: {location.latitude}</p>
-          <p>Long: {location.longitude}</p>
 
-        </div>
-      )}
-      <div className="grid grid-cols-12">
+  }
+
+  // The fetch result displayed into the UI
+  const MainView = () => {
+    return (
+      <div className="grid grid-cols-12 md:gap-6 md">
         {mainData?.map((data, index) => {
           if (typeof data.location_string != "undefined") {
             const imageUrl = data?.photo?.images?.original?.url;
             return (
-              <Link className='md:col-span-4 col-span-12 pb-2 h-[300px] mb-3 !rounded-t-md overflow-hidden' key={index} href={{ pathname: "/chat", query: { data: JSON.stringify({ name: data?.name, location: data?.location_string }) } }} >
+              <div className='md:col-span-4 col-span-12 pb-2 h-[300px] mb-3 !rounded-t-md overflow-hidden' key={index} onClick={() => loadChat(data)} >
                 <div
                   className=' bg-slate-800 rounded-md h-full rounded-t-md'
                 >
@@ -115,7 +136,7 @@ export default function Home() {
                     <h1 className='text-center text-slate-400'>location: {data?.location_string}</h1>
                   </div>
                 </div>
-              </Link>
+              </div>
 
             );
           }
@@ -123,8 +144,12 @@ export default function Home() {
 
         })}
       </div>
+    )
+  }
 
-
+  return (
+    <div className='p-6'>
+      {isLoading ? <LoadingView /> : <MainView />}
     </div>
   );
 }
