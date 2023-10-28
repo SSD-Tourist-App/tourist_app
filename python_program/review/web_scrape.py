@@ -19,28 +19,35 @@ def goFetchIt(url):
 def retriever(url_string):
     html_texts = goFetchIt(url_string)  # The fetch request
     soup = BeautifulSoup(html_texts, 'lxml')
-    totalReview = soup.find("div", class_ = "Ci").text
-    totalReview = int(totalReview.split(" ")[-1].replace(",",""))
-    totalReviewPages = math.ceil(totalReview/10)
     getAbout(soup)
-    global content
-    content += "\nReviews\n"
-    num = 0
-    urlList = url_string.split("Reviews-")
-    while num <= totalReviewPages*10:
-        if num == 0:
-            getReviews(url_string)
-        else:
-            url = f"{urlList[0]}Reviews-or{num}-{urlList[1]}"
-            getReviews(url)
-        num += 10
+    try:
+        totalReview = soup.find("div", class_ = "Ci").text
+    except:
+        totalReview = None
+    if totalReview:
+        totalReview = int(totalReview.split(" ")[-1].replace(",",""))
+        totalReviewPages = math.ceil(totalReview/10)
+        global content
+        content += "\nReviews\n"
+        num = 0
+        urlList = url_string.split("Reviews-")
+        while num <= totalReviewPages*10:
+            if num == 0:
+                getReviews(url_string)
+            else:
+                url = f"{urlList[0]}Reviews-or{num}-{urlList[1]}"
+                getReviews(url)
+            num += 10
     getTravels(soup)
     
 
 def getAbout(soup):
-    element = soup.find("span", class_ = "JguWG")
-    global content
-    content += f"About\n{element.text}\n"
+    try:
+        element = soup.find("span", class_ = "JguWG")
+        global content
+        content += f"About\n{element.text}\n"
+    except:
+        return
 
 def getTravels(soup):
     global content
@@ -51,7 +58,7 @@ def getTravels(soup):
                 content += element.find("div", class_ = "biGQs _P pZUbB KxBGd").text
                 content += "\n"
         except:
-            pass
+            return
 
 def getReviews(url_string):
     html_texts = goFetchIt(url_string)  # The fetch request
@@ -65,17 +72,17 @@ def getReviews(url_string):
                 content += element.find("span", class_ = "yCeTE").text
                 content += "\n\n"
         except:
-            pass
+            return
 
 
-def wikiScraper(url_string):
+def webScraper(url_string, fileName):
     retriever(url_string)
     global content
+    with open(f"{fileName}.txt", "w") as file:
+        file.write(content)
     return content
 
 
 if __name__ == "__main__":
-    text = wikiScraper("https://www.tripadvisor.com/Attraction_Review-g47088-d7209454-Reviews-Plaza_Antiques-Las_Vegas_New_Mexico.html")
-    print(text)
-    with open("content.txt", "w") as file:
-        file.write(content)
+    text = webScraper("https://www.tripadvisor.com/Attraction_Review-g60958-d10084963-Reviews-Meow_Wolf_Santa_Fe-Santa_Fe_New_Mexico.html", "content")
+    
